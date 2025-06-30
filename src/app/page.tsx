@@ -1,10 +1,11 @@
 import { Metadata } from 'next';
 import { homeData } from '../data/homeData';
-import HeroSection from '../components/HeroSection';
 import PopularDestinations from '../components/PopularDestinations';
 import NewsletterSection from '../components/NewsletterSection';
+import FlightSearch from '../components/FlightSearch';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Book & Search Flights Online – Best Travel Deals 2025',
@@ -13,29 +14,197 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+  const handleSearchResults = (results: any, searchData?: any) => {
+    localStorage.setItem('flightSearchResults', JSON.stringify(results));
+    
+    // Store search data for pricing API
+    if (searchData) {
+      localStorage.setItem('flightSearchData', JSON.stringify(searchData));
+    }
+    
+    window.location.href = '/results';
+  };
+
   return (
     <main className="bg-white">
-      {/* Hero Section with Primary Keywords */}
-      <section className="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 py-20">
-        <div className="absolute inset-0 overflow-hidden">
-          <Image
-            src="/images/hero-bg.jpg"
-            alt="Search flights and book airline tickets"
-            fill
-            className="object-cover opacity-20"
-            priority
-          />
-        </div>
-        <div className="container mx-auto px-4 relative">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Search Flights Instantly – Compare, Book & Fly
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
-              Looking for <span className="text-[#dc0069] font-semibold">cheap flight fares</span> or last-minute <span className="text-[#dc0069] font-semibold">airline deals</span>? Use our flight search tool to find the best <span className="text-[#dc0069] font-semibold">google flight tickets</span> across top airlines. Fast, easy, and built for UK travellers.
-            </p>
+      {/* Hero Section with Image Grid */}
+      <section className="relative bg-white py-20 overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="space-y-8">
+              <div>
+                <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                  Let's{' '}
+                  <span className="inline-flex items-center">
+                    ✈️
+                  </span>{' '}
+                  Travel{' '}
+                  <span className="text-[#dc0069]">The World</span>{' '}
+                  Today!
+                </h1>
+                <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
+                  Discover a world of possibilities with our premier travel agency. 
+                  Whether you crave relaxation on sun-kissed beaches or crave 
+                  adventure in remote corners of the globe.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-4">
+                <button className="bg-[#dc0069] text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-pink-600 transition-colors shadow-lg">
+                  Get Started
+                </button>
+                <button className="border-2 border-[#dc0069] text-[#dc0069] px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#dc0069] hover:text-white transition-colors">
+                  Explore
+                </button>
+              </div>
+
+              {/* Compact Flight Search */}
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+                <div className="grid grid-cols-4 gap-4 items-end">
+                  {/* Location */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <div className="relative">
+                      <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#dc0069] appearance-none bg-white">
+                        <option>New York</option>
+                        <option>London</option>
+                        <option>Paris</option>
+                        <option>Tokyo</option>
+                      </select>
+                      <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Date */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value="8 Fri, Aug" 
+                        readOnly
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#dc0069] cursor-pointer"
+                      />
+                      <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Price */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value="$10,000 - $20,000" 
+                        readOnly
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#dc0069] cursor-pointer"
+                      />
+                      <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Search Button */}
+                  <div>
+                    <button className="w-full bg-[#dc0069] text-white p-3 rounded-lg hover:bg-pink-600 transition-colors flex items-center justify-center">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Image Grid */}
+            <div className="relative">
+              {/* Watch Now Badge */}
+              <div className="absolute -top-4 -right-4 z-10">
+                <div className="bg-white rounded-full p-4 shadow-lg border-4 border-[#dc0069]">
+                  <div className="text-center">
+                    <div className="text-[#dc0069] font-bold text-sm">Watch Now</div>
+                    <div className="w-8 h-8 bg-[#dc0069] rounded-full flex items-center justify-center mt-2 mx-auto">
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Image Grid */}
+              <div className="grid grid-cols-2 gap-4 h-[600px]">
+                {/* Large Image - Buddha Statue */}
+                <div className="relative rounded-2xl overflow-hidden shadow-lg">
+                  <Image
+                    src="https://images.pexels.com/photos/1829980/pexels-photo-1829980.jpeg"
+                    alt="Buddha statue in mountains"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Right Column - Two Images */}
+                <div className="space-y-4">
+                  {/* Ocean/Boat Image */}
+                  <div className="relative h-[290px] rounded-2xl overflow-hidden shadow-lg">
+                    <Image
+                      src="https://images.pexels.com/photos/1001682/pexels-photo-1001682.jpeg"
+                      alt="Boat in crystal clear water"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {/* Hiking/Adventure Image */}
+                  <div className="relative h-[290px] rounded-2xl overflow-hidden shadow-lg">
+                    <Image
+                      src="https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg"
+                      alt="Person hiking by the ocean"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Best Packages Link */}
+              <div className="absolute -bottom-4 -right-4">
+                <div className="bg-white rounded-full px-6 py-3 shadow-lg border border-gray-200">
+                  <div className="flex items-center gap-2 text-[#dc0069] font-semibold">
+                    <span>Best Packages</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <HeroSection {...homeData.hero} />
+        </div>
+      </section>
+
+      {/* Full Flight Search Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                Search <span className="text-[#dc0069]">Flights</span> Instantly
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Compare prices across hundreds of airlines and find the best deals for your next trip
+              </p>
+            </div>
+            <FlightSearch onSearch={handleSearchResults} />
+          </div>
         </div>
       </section>
 
