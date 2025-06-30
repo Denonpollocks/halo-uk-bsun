@@ -1,3 +1,5 @@
+"use client";
+
 import { Metadata } from 'next';
 import { homeData } from '../data/homeData';
 import PopularDestinations from '../components/PopularDestinations';
@@ -6,12 +8,6 @@ import FlightSearch from '../components/FlightSearch';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-export const metadata: Metadata = {
-  title: 'Book & Search Flights Online – Best Travel Deals 2025',
-  description: 'Find and compare flights instantly. Book cheap flight fares, discover last-minute airline deals, and explore multi-city routes. Trusted by travelers across the UK.',
-  keywords: 'google flight tickets, google search flights, search flights, flights near me, cheap flight fares, airline deals, flight ticket offers, airfare, best online travel agency, low fare flights, skyscanner multi city, standby flights, travel travel agency',
-};
 
 export default function Home() {
   const handleSearchResults = (results: any, searchData?: any) => {
