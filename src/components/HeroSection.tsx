@@ -59,7 +59,7 @@ export default function HeroSection({ title, subtitle, backgroundImage }: HeroSe
 
             {/* Compact Flight Search */}
             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-              <FlightSearch onSearch={handleSearchResults} />
+              <FlightSearch onSearch={handleSearchResults} compact={true} />
             </div>
           </div>
 
