@@ -60,61 +60,16 @@ export default function Home() {
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
                 <div className="grid grid-cols-4 gap-4 items-end">
                   {/* Location */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
-                    <div className="relative">
-                      <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#dc0069] appearance-none bg-white">
-                        <option>New York</option>
-                        <option>London</option>
-                        <option>Paris</option>
-                        <option>Tokyo</option>
-                      </select>
-                      <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </div>
+                 
 
                   {/* Date */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
-                    <div className="relative">
-                      <input 
-                        type="text" 
-                        value="8 Fri, Aug" 
-                        readOnly
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#dc0069] cursor-pointer"
-                      />
-                      <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                  </div>
+                 
 
                   {/* Price */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
-                    <div className="relative">
-                      <input 
-                        type="text" 
-                        value="$10,000 - $20,000" 
-                        readOnly
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#dc0069] cursor-pointer"
-                      />
-                      <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </div>
+                 
 
                   {/* Search Button */}
-                  <div>
-                    <button className="w-full bg-[#dc0069] text-white p-3 rounded-lg hover:bg-pink-600 transition-colors flex items-center justify-center">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </button>
-                  </div>
+                  
                 </div>
               </div>
             </div>
