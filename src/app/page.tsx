@@ -26,34 +26,27 @@ export default function Home() {
       {/* Hero Section with Image Grid */}
       <section className="relative bg-white py-20 overflow-hidden">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="space-y-8">
               <div>
                 <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                  Let's{' '}
+                Search Flights Instantly -{' '}
                   <span className="inline-flex items-center">
-                    ✈️
+                    
                   </span>{' '}
-                  Travel{' '}
-                  <span className="text-[#dc0069]">The World</span>{' '}
-                  Today!
+                  Compare,{' '}
+                  <span className="text-[#dc0069]">Book</span> & Fly{' '}
+                  
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                  Discover a world of possibilities with our premier travel agency. 
-                  Whether you crave relaxation on sun-kissed beaches or crave 
-                  adventure in remote corners of the globe.
+                  
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-4">
-                <button className="bg-[#dc0069] text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-pink-600 transition-colors shadow-lg">
-                  Get Started
-                </button>
-                <button className="border-2 border-[#dc0069] text-[#dc0069] px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#dc0069] hover:text-white transition-colors">
-                  Explore
-                </button>
+              <div className="flex relative z-10 ">
+             <FlightSearch onSearch={handleSearchResults} />
               </div>
 
               {/* Compact Flight Search */}
@@ -63,7 +56,7 @@ export default function Home() {
             {/* Right Image Grid */}
             <div className="relative">
               {/* Watch Now Badge */}
-              <div className="absolute -top-4 -right-4 z-10">
+              <div className="hidden md:block absolute -top-4 -right-4 z-10">
                 <div className="bg-white rounded-full p-4 shadow-lg border-4 border-[#dc0069]">
                   <div className="text-center">
                     <div className="text-[#dc0069] font-bold text-sm">Watch Now</div>
@@ -77,7 +70,7 @@ export default function Home() {
               </div>
 
               {/* Image Grid */}
-              <div className="grid grid-cols-2 gap-4 h-[600px]">
+              <div className="hidden block md:grid md:grid-cols-2 md:gap-4 md:h-[600px]">
                 {/* Large Image - Buddha Statue */}
                 <div className="relative rounded-2xl overflow-hidden shadow-lg">
                   <Image
@@ -113,7 +106,7 @@ export default function Home() {
               </div>
 
               {/* Best Packages Link */}
-              <div className="absolute -bottom-4 -right-4">
+              <div className="hidden md:block absolute -bottom-4 -right-4">
                 <div className="bg-white rounded-full px-6 py-3 shadow-lg border border-gray-200">
                   <div className="flex items-center gap-2 text-[#dc0069] font-semibold">
                     <span>Best Packages</span>
@@ -129,21 +122,7 @@ export default function Home() {
       </section>
 
       {/* Full Flight Search Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Search <span className="text-[#dc0069]">Flights</span> Instantly
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Compare prices across hundreds of airlines and find the best deals for your next trip
-              </p>
-            </div>
-            <FlightSearch onSearch={handleSearchResults} />
-          </div>
-        </div>
-      </section>
+   
 
       {/* Trust Indicators */}
       <section className="py-12 bg-gray-50">
@@ -439,7 +418,7 @@ export default function Home() {
       {/* Flights Near You Section */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-6">
                 <span className="text-[#dc0069]">Flights Near You</span> – Made Simple

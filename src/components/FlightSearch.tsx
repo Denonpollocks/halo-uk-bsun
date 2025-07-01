@@ -147,70 +147,67 @@ export default function FlightSearch({ onSearch }: { onSearch: (results: any, se
   const getPassengerBreakdown = () => {
     const { adults, children, infants, youth } = searchData.passengers;
     const parts = [];
-    if (adults) parts.push(`${adults} Adult${adults > 1 ? 's' : ''} (12+)`);
-    if (children) parts.push(`${children} Child${children > 1 ? 'ren' : ''} (2-11)`);
-    if (youth) parts.push(`${youth} Youth${youth > 1 ? 's' : ''} (12-15)`);
-    if (infants) parts.push(`${infants} Infant${infants > 1 ? 's' : ''} (0-1)`);
+    if (adults) parts.push(`${adults} Adult${adults > 1 ? 's' : ''}`);
+    if (children) parts.push(`${children} Child${children > 1 ? 'ren' : ''}`);
+    if (youth) parts.push(`${youth} Youth${youth > 1 ? 's' : ''}`);
+    if (infants) parts.push(`${infants} Infant${infants > 1 ? 's' : ''}`);
     return parts.length ? parts.join(', ') : 'Select Passengers';
   };
 
   return (
-    <div className="bg-white p-6 w-full rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Flight Search</h2>
-      
-      {/* Trip Type Selection */}
-      <div className="flex gap-6 mb-8">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            checked={searchData.TripType === "RT"}
-            onChange={() => setSearchData(prev => ({ ...prev, TripType: "RT" }))}
-            className="form-radio text-blue-600"
-          />
-          <span className="text-gray-700">Return</span>
-        </label>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            checked={searchData.TripType === "OW"}
-            onChange={() => setSearchData(prev => ({ ...prev, TripType: "OW" }))}
-            className="form-radio text-blue-600"
-          />
-          <span className="text-gray-700">One-way</span>
-        </label>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            checked={searchData.TripType === "MT"}
-            onChange={() => setSearchData(prev => ({ ...prev, TripType: "MT" }))}
-            className="form-radio text-blue-600"
-          />
-          <span className="text-gray-700">Multi City</span>
-        </label>
-      </div>
-
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
+    <div className="w-full flex flex-col items-center md:items-start justify-center mt-12 px-2">
+      {/* Trip Type Selector (completely separate row above) */}
+      <div className="flex justify-center mb-4 flex-wrap text-xs sm:text-sm">
+        <div className="flex space-x-2">
+          <label className={`px-4 py-1 rounded-full cursor-pointer border font-medium transition ${searchData.TripType === "RT" ? "bg-indigo-50 border-indigo-500 text-indigo-700" : "bg-white border-gray-300 text-gray-500"}`}>
+            <input
+              type="radio"
+              checked={searchData.TripType === "RT"}
+              onChange={() => setSearchData(prev => ({ ...prev, TripType: "RT" }))}
+              className="hidden"
+            />
+            Return
+          </label>
+          <label className={`px-4 py-1 rounded-full cursor-pointer border font-medium transition ${searchData.TripType === "OW" ? "bg-indigo-50 border-indigo-500 text-indigo-700" : "bg-white border-gray-300 text-gray-500"}`}>
+            <input
+              type="radio"
+              checked={searchData.TripType === "OW"}
+              onChange={() => setSearchData(prev => ({ ...prev, TripType: "OW" }))}
+              className="hidden"
+            />
+            One-way
+          </label>
+          <label className={`px-4 py-1 rounded-full cursor-pointer border font-medium transition ${searchData.TripType === "MT" ? "bg-indigo-50 border-indigo-500 text-indigo-700" : "bg-white border-gray-300 text-gray-500"}`}>
+            <input
+              type="radio"
+              checked={searchData.TripType === "MT"}
+              onChange={() => setSearchData(prev => ({ ...prev, TripType: "MT" }))}
+              className="hidden"
+            />
+            Multi City
+          </label>
         </div>
-      )}
-
-      <div className="grid grid-cols-12 gap-4 items-start">
-        {/* Origin and Destination */}
-        <div className="col-span-5 relative">
-          <label className="block text-sm font-medium text-gray-700 mb-1">From where?</label>
-          <input
-            ref={originInputRef}
-            type="text"
-            placeholder="City or Airport"
-            value={searchData.origin}
-            onChange={handleOriginChange}
-            onFocus={() => setShowOriginSuggestions(originSuggestions.length > 0)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg"
-            autoComplete="off"
-          />
+      </div>
+      {/* Main search bar (all fields, always stacked vertically) */}
+      <div className=" w-full max-w-lg flex flex-col items-stretch bg-white rounded-2xl shadow px-4 py-6">
+        {/* Origin */}
+        <div className="flex flex-col mb-4 min-w-[140px]">
+          <span className="font-bold text-gray-700 mb-1">From</span>
+          <div className="flex items-center text-gray-400 w-full">
+            <svg className="w-5 h-5 mr-2 text-pink-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <input
+              ref={originInputRef}
+              type="text"
+              placeholder="City or Airport"
+              value={searchData.origin}
+              onChange={handleOriginChange}
+              onFocus={() => setShowOriginSuggestions(originSuggestions.length > 0)}
+              className="bg-transparent outline-none text-gray-700 placeholder-gray-400 w-full"
+              autoComplete="off"
+            />
+          </div>
           {showOriginSuggestions && originSuggestions.length > 0 && (
-            <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-lg max-h-60 overflow-auto">
+            <ul className="absolute z-10 w-64 bg-white border border-gray-300 rounded-lg mt-1 shadow-lg max-h-60 overflow-auto">
               {originSuggestions.map((suggestion, idx) => (
                 <li
                   key={idx}
@@ -223,33 +220,25 @@ export default function FlightSearch({ onSearch }: { onSearch: (results: any, se
             </ul>
           )}
         </div>
-
-        {/* Swap Button */}
-        <div className="col-span-2 flex items-center justify-center mt-6">
-          <button
-            onClick={handleSwapLocations}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-          >
-            <svg className="w-6 h-6 text-orange-500 transform rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-            </svg>
-          </button>
-        </div>
-
-        <div className="col-span-5 relative">
-          <label className="block text-sm font-medium text-gray-700 mb-1">To where?</label>
-          <input
-            ref={destinationInputRef}
-            type="text"
-            placeholder="City or Airport"
-            value={searchData.destination}
-            onChange={handleDestinationChange}
-            onFocus={() => setShowDestinationSuggestions(destinationSuggestions.length > 0)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg"
-            autoComplete="off"
-          />
+        <div className="border-t my-2" />
+        {/* Destination */}
+        <div className="flex flex-col mb-4 min-w-[140px]">
+          <span className="font-bold text-gray-700 mb-1">To</span>
+          <div className="flex items-center text-gray-400 w-full">
+            <svg className="w-5 h-5 mr-2 text-pink-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <input
+              ref={destinationInputRef}
+              type="text"
+              placeholder="City or Airport"
+              value={searchData.destination}
+              onChange={handleDestinationChange}
+              onFocus={() => setShowDestinationSuggestions(destinationSuggestions.length > 0)}
+              className="bg-transparent outline-none text-gray-700 placeholder-gray-400 w-full"
+              autoComplete="off"
+            />
+          </div>
           {showDestinationSuggestions && destinationSuggestions.length > 0 && (
-            <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-lg max-h-60 overflow-auto">
+            <ul className="absolute z-10 w-64 bg-white border border-gray-300 rounded-lg mt-1 shadow-lg max-h-60 overflow-auto">
               {destinationSuggestions.map((suggestion, idx) => (
                 <li
                   key={idx}
@@ -262,17 +251,20 @@ export default function FlightSearch({ onSearch }: { onSearch: (results: any, se
             </ul>
           )}
         </div>
-
-        {/* Dates */}
-        <div className="col-span-3 relative">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Leaving on</label>
-          <input
-            type="text"
-            value={departDate ? format(departDate, "MMMM d, yyyy") : ""}
-            onClick={() => setShowDepartCalendar(true)}
-            readOnly
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 cursor-pointer text-lg"
-          />
+        <div className="border-t my-2" />
+        {/* Departure */}
+        <div className="flex flex-col mb-4 min-w-[140px]">
+          <span className="font-bold text-gray-700 mb-1">Departure</span>
+          <div className="flex items-center text-gray-700">
+            <svg className="w-5 h-5 mr-2 text-pink-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <input
+              type="text"
+              value={departDate ? format(departDate, "dd/MM/yyyy") : ""}
+              onClick={() => setShowDepartCalendar(true)}
+              readOnly
+              className="bg-transparent outline-none text-gray-700 cursor-pointer w-28"
+            />
+          </div>
           {showDepartCalendar && (
             <div className="absolute z-20 mt-1">
               <Calendar
@@ -284,17 +276,21 @@ export default function FlightSearch({ onSearch }: { onSearch: (results: any, se
             </div>
           )}
         </div>
-
-        {searchData.TripType === "RT" && (
-          <div className="col-span-3 relative">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Returning on</label>
-            <input
-              type="text"
-              value={returnDate ? format(returnDate, "MMMM d, yyyy") : ""}
-              onClick={() => setShowReturnCalendar(true)}
-              readOnly
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 cursor-pointer text-lg"
-            />
+        {(searchData.TripType === "RT" || searchData.TripType === "MT") && <div className="border-t my-2" />}
+        {/* Return (only for RT or MT) */}
+        {(searchData.TripType === "RT" || searchData.TripType === "MT") && (
+          <div className="flex flex-col mb-4 min-w-[140px]">
+            <span className="font-bold text-gray-700 mb-1">Return</span>
+            <div className="flex items-center text-gray-700">
+              <svg className="w-5 h-5 mr-2 text-pink-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <input
+                type="text"
+                value={returnDate ? format(returnDate, "dd/MM/yyyy") : ""}
+                onClick={() => setShowReturnCalendar(true)}
+                readOnly
+                className="bg-transparent outline-none text-gray-700 cursor-pointer w-28"
+              />
+            </div>
             {showReturnCalendar && (
               <div className="absolute z-20 mt-1">
                 <Calendar
@@ -308,133 +304,69 @@ export default function FlightSearch({ onSearch }: { onSearch: (results: any, se
             )}
           </div>
         )}
-
-        {/* Passengers Dropdown */}
-        <div className="col-span-3 relative">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Passengers</label>
+        <div className="border-t my-2" />
+        {/* Class */}
+        <div className="flex flex-col mb-4 min-w-[140px]">
+          <span className="font-bold text-gray-700 mb-1">Class</span>
+          <select
+            value={searchData.class}
+            onChange={(e) => setSearchData({ ...searchData, class: e.target.value as any })}
+            className="bg-transparent outline-none text-gray-700 cursor-pointer w-full"
+          >
+            <option value="Economy">Economy</option>
+            <option value="Business">Business</option>
+            <option value="First">First Class</option>
+          </select>
+        </div>
+        <div className="border-t my-2" />
+        {/* Passengers */}
+        <div className="flex flex-col mb-4 min-w-[140px]">
+          <span className="font-bold text-gray-700 mb-1">Passengers</span>
           <button
             onClick={() => setShowPassengersDropdown(!showPassengersDropdown)}
-            className="w-full p-3 border border-gray-300 rounded-lg text-left text-lg flex justify-between items-center"
+            className="flex items-center bg-transparent outline-none text-gray-700 cursor-pointer"
             type="button"
           >
+            <svg className="w-5 h-5 mr-2 text-pink-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
             <span>{getPassengerBreakdown()}</span>
-            <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
           </button>
           {showPassengersDropdown && (
-            <div className="absolute z-20 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg p-4">
+            <div className="absolute z-20 mt-1 w-72 bg-white border border-gray-300 rounded-lg shadow-lg p-4">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700">Adults <span className="text-xs text-gray-500">(12+)</span></span>
                   <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setSearchData(prev => ({
-                        ...prev,
-                        passengers: { ...prev.passengers, adults: Math.max(1, prev.passengers.adults - 1) }
-                      }))}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                    >
-                      -
-                    </button>
+                    <button type="button" onClick={() => setSearchData(prev => ({ ...prev, passengers: { ...prev.passengers, adults: Math.max(1, prev.passengers.adults - 1) } }))} className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">-</button>
                     <span className="w-8 text-center">{searchData.passengers.adults}</span>
-                    <button
-                      type="button"
-                      onClick={() => setSearchData(prev => ({
-                        ...prev,
-                        passengers: { ...prev.passengers, adults: prev.passengers.adults + 1 }
-                      }))}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                    >
-                      +
-                    </button>
+                    <button type="button" onClick={() => setSearchData(prev => ({ ...prev, passengers: { ...prev.passengers, adults: prev.passengers.adults + 1 } }))} className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">+</button>
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700">Children <span className="text-xs text-gray-500">(2-11)</span></span>
                   <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setSearchData(prev => ({
-                        ...prev,
-                        passengers: { ...prev.passengers, children: Math.max(0, prev.passengers.children - 1) }
-                      }))}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                    >
-                      -
-                    </button>
+                    <button type="button" onClick={() => setSearchData(prev => ({ ...prev, passengers: { ...prev.passengers, children: Math.max(0, prev.passengers.children - 1) } }))} className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">-</button>
                     <span className="w-8 text-center">{searchData.passengers.children}</span>
-                    <button
-                      type="button"
-                      onClick={() => setSearchData(prev => ({
-                        ...prev,
-                        passengers: { ...prev.passengers, children: prev.passengers.children + 1 }
-                      }))}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                    >
-                      +
-                    </button>
+                    <button type="button" onClick={() => setSearchData(prev => ({ ...prev, passengers: { ...prev.passengers, children: prev.passengers.children + 1 } }))} className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">+</button>
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700">Youth <span className="text-xs text-gray-500">(12-15)</span></span>
                   <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setSearchData(prev => ({
-                        ...prev,
-                        passengers: { ...prev.passengers, youth: Math.max(0, prev.passengers.youth - 1) }
-                      }))}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                    >
-                      -
-                    </button>
+                    <button type="button" onClick={() => setSearchData(prev => ({ ...prev, passengers: { ...prev.passengers, youth: Math.max(0, prev.passengers.youth - 1) } }))} className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">-</button>
                     <span className="w-8 text-center">{searchData.passengers.youth}</span>
-                    <button
-                      type="button"
-                      onClick={() => setSearchData(prev => ({
-                        ...prev,
-                        passengers: { ...prev.passengers, youth: prev.passengers.youth + 1 }
-                      }))}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                    >
-                      +
-                    </button>
+                    <button type="button" onClick={() => setSearchData(prev => ({ ...prev, passengers: { ...prev.passengers, youth: prev.passengers.youth + 1 } }))} className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">+</button>
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700">Infants <span className="text-xs text-gray-500">(0-1)</span></span>
                   <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setSearchData(prev => ({
-                        ...prev,
-                        passengers: { ...prev.passengers, infants: Math.max(0, prev.passengers.infants - 1) }
-                      }))}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                    >
-                      -
-                    </button>
+                    <button type="button" onClick={() => setSearchData(prev => ({ ...prev, passengers: { ...prev.passengers, infants: Math.max(0, prev.passengers.infants - 1) } }))} className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">-</button>
                     <span className="w-8 text-center">{searchData.passengers.infants}</span>
-                    <button
-                      type="button"
-                      onClick={() => setSearchData(prev => ({
-                        ...prev,
-                        passengers: { ...prev.passengers, infants: prev.passengers.infants + 1 }
-                      }))}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
-                    >
-                      +
-                    </button>
+                    <button type="button" onClick={() => setSearchData(prev => ({ ...prev, passengers: { ...prev.passengers, infants: prev.passengers.infants + 1 } }))} className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">+</button>
                   </div>
                 </div>
                 <div className="mt-4 flex justify-end">
-                  <button
-                    type="button"
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                    onClick={() => setShowPassengersDropdown(false)}
-                  >
+                  <button type="button" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" onClick={() => setShowPassengersDropdown(false)}>
                     Confirm
                   </button>
                 </div>
@@ -442,144 +374,18 @@ export default function FlightSearch({ onSearch }: { onSearch: (results: any, se
             </div>
           )}
         </div>
-
-        {/* Class Selection */}
-        <div className="col-span-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Class</label>
-          <div className="relative">
-            <select
-              value={searchData.class}
-              onChange={(e) => setSearchData({ ...searchData, class: e.target.value as any })}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg appearance-none"
-            >
-              <option value="Economy">Economy</option>
-              <option value="Business">Business</option>
-              <option value="First">First Class</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-              <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
+        <div className="border-t my-2" />
+        {/* Direct/Flexible/Airline */}
+     
+        {/* Buttons */}
+        <div className="flex items-center space-x-2 mt-2">
+          <button type="button" className="px-5 py-2 rounded-full border border-pink-500 text-pink-600 font-semibold bg-white hover:bg-pink-50 transition" onClick={() => { setSearchData({ ...searchData, origin: '', destination: '', airlineCode: '', passengers: { adults: 1, children: 0, infants: 0, youth: 0 } }); }}>
+            Clear
+          </button>
+          <button onClick={handleSearch} disabled={loading} className="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center hover:bg-pink-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+          </button>
         </div>
-      </div>
-
-      {/* Flight Options */}
-      <div className="mt-6 bg-gray-50 rounded-lg p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-              <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Flight Options
-            </h3>
-            
-            {/* Direct Flights Only */}
-            <label className={`flex items-start cursor-pointer p-3 rounded-lg border transition-colors ${
-              searchData.isDirectFlight 
-                ? 'bg-blue-50 border-blue-200' 
-                : 'bg-white border-gray-200 hover:border-gray-300'
-            }`}>
-              <input
-                type="checkbox"
-                checked={searchData.isDirectFlight}
-                onChange={(e) => setSearchData({ ...searchData, isDirectFlight: e.target.checked })}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-5 w-5 mt-0.5"
-              />
-              <span className="ml-3">
-                <span className="font-medium text-gray-800">Direct flights only</span>
-                <p className="text-sm text-gray-600 mt-1">Show only non-stop flights</p>
-              </span>
-            </label>
-
-            {/* Flexible Dates */}
-            <label className={`flex items-start cursor-pointer p-3 rounded-lg border transition-colors ${
-              searchData.isFlexibleDate 
-                ? 'bg-green-50 border-green-200' 
-                : 'bg-white border-gray-200 hover:border-gray-300'
-            }`}>
-              <input
-                type="checkbox"
-                checked={searchData.isFlexibleDate}
-                onChange={(e) => setSearchData({ ...searchData, isFlexibleDate: e.target.checked })}
-                className="rounded border-gray-300 text-green-600 focus:ring-green-500 h-5 w-5 mt-0.5"
-              />
-              <span className="ml-3">
-                <span className="font-medium text-gray-800">Flexible dates</span>
-                <p className="text-sm text-gray-600 mt-1">Search ±3 days around selected dates</p>
-              </span>
-            </label>
-          </div>
-
-          {/* Additional Options */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-              <svg className="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-              </svg>
-              Additional Options
-            </h3>
-            
-            {/* Airline Preference */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Airline (Optional)</label>
-              <input
-                type="text"
-                placeholder="e.g., BA, EK, LH"
-                value={searchData.airlineCode}
-                onChange={(e) => setSearchData({ ...searchData, airlineCode: e.target.value.toUpperCase() })}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-lg"
-              />
-              <p className="text-xs text-gray-500 mt-1">Leave empty to search all airlines</p>
-            </div>
-
-            {/* Active Options Summary */}
-            <div className="mt-4 p-3 bg-white border border-gray-200 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Active Options:</h4>
-              <div className="space-y-1 text-xs text-gray-600">
-                {searchData.isDirectFlight && (
-                  <div className="flex items-center">
-                    <svg className="w-3 h-3 mr-1 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Direct flights only
-                  </div>
-                )}
-                {searchData.isFlexibleDate && (
-                  <div className="flex items-center">
-                    <svg className="w-3 h-3 mr-1 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Flexible dates (±3 days)
-                  </div>
-                )}
-                {searchData.airlineCode && (
-                  <div className="flex items-center">
-                    <svg className="w-3 h-3 mr-1 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Airline: {searchData.airlineCode}
-                  </div>
-                )}
-                {!searchData.isDirectFlight && !searchData.isFlexibleDate && !searchData.airlineCode && (
-                  <div className="text-gray-400 italic">No special options selected</div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6 flex justify-end">
-        <button
-          onClick={handleSearch}
-          disabled={loading}
-          className="bg-indigo-900 text-white px-8 py-3 rounded-lg hover:bg-indigo-800 disabled:bg-gray-400 disabled:cursor-not-allowed font-medium text-lg"
-        >
-          {loading ? "Searching..." : "Modify Search"}
-        </button>
       </div>
     </div>
   );
